@@ -1,14 +1,15 @@
-import requests
+# -*- coding: utf-8 -*-
+from telegram.ext import Updater         # пакет называется python-telegram-bot, но Python-
+from telegram.ext import CommandHandler  # модуль почему-то просто telegram ¯\_(ツ)_/¯
 
-url = "https://api.telegram.org/bot805328174:AAFSqdi-I20SNxQPI504D_F7WHAgfdJGJ6g/"
+def start(bot, update):
+    # подробнее об объекте update: https://core.telegram.org/bots/api#update
+    bot.sendMessage(chat_id=update.message.chat_id, text="Здравствуйте.")
 
+updater = Updater(token='805328174:AAFSqdi-I20SNxQPI504D_F7WHAgfdJGJ6g')  # тут токен, который выдал вам Ботский Отец!
 
-def get_updates_json(request):
-    response = requests.get(request + 'getUpdates')
-    return response.json()
+start_handler = CommandHandler('start', start)  # этот обработчик реагирует
+                                                # только на команду /start
 
-
-def last_update(data):
-    results = data['result']
-    total_updates = len(results) - 1
-    return results[total_updates]
+updater.dispatcher.add_handler(start_handler)   # регистрируем в госреестре обработчиков
+updater.start_polling()  # поехали!
